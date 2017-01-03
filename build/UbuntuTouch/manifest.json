@@ -1,0 +1,14 @@
+{
+    "description":  "Aventura conversacional de ciencia ficción. SciFi interactive fiction.",
+    "framework":    "ubuntu-sdk-15.04-html",
+    "hooks": {
+        "visitantes": {
+            "apparmor": "app.json",
+            "desktop":  "app.desktop"
+        }
+    },
+    "maintainer":   "Baltasar <baltasarq@gmail.com>",
+    "name":         "visitantes.baltasarq",
+    "title":        "Visitantes",
+    "version":      "1.4"
+}
