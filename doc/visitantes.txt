@@ -1,0 +1,24 @@
+Sala de reuniones
+
+Un gran tapete antigravitatorio sirve de soporte para las deliberaciones que tienen lugar en esta parte de la nave. El zumbido de los motores antigravedad, apenas audible a través de las paredes metálicas, se expande agradablemente por la habitación. Dos lugares ligeramente elevados, reservados para el comandante y el primer oficial, destacan en uno de los extremos del óvalo que forma el tapete. El resto de lugares se encuentra en su mayoría vacío, tan sólo uno lo ocupa el oficial de operaciones especiales.
+
+> ex ngarr
+El oficial de operaciones especiales es un hábil maestro del disfraz, su cuerpo ha sido modificado genéticamente para mutar a voluntad en cuanto a su aspecto exterior. Aunque no todos los Alkranos estarían dispuestos a sufrir una modificación de tal calibre, oficiales de la abnegación y coraje de ngarr lo hacen voluntariamente.
+
+> habla con ngarr
+Hablas un rato con él.
+
+> ex laggan
+El primer oficial es el tipo de Alkrano que vuelve a ser muy popular entre los puestos militares de hoy en día. Si bien su historial resulta impecable, tiene una cierta tendencia beligerante. Esto se pone de manifiesto cuando la nave se encuentra bajo su mando, tiempo durante el cual los escudos siempre están activos, aún a pesar del elevado consumo de energía que ello supone... y del hecho de que hace más de 100 sarksecs que los Alkranos viven en armonía en la galaxia Alkrana (mejor dicho Galera, ahora que todos los planetas de la gran galaxia viven en paz).
+
+> habla con laggan
+Vale.
+
+> ex tapete
+El típico tapete antigravitatorio, mucho más cómodo que andar arrastrándose por el suelo, dónde va a parar.
+
+> ex lugares
+Son prominencias antigravitatorias, una simple manera de conservar las tradiciones del mando en un navío de guerra.
+
+.finloc
+

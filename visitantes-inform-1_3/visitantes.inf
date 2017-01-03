@@ -1,0 +1,807 @@
+!% -~S~D
+!% +language_name=Spanish
+
+! generado por GLULXI6I18N@txtMap, v0.3/v0.46 20080803
+! Thu Nov 26 12:13:18 2009
+
+
+
+Constant Story "Visitantes";
+Constant Headline "^Los Alkranos buscan un planeta... como la Tierra.^^";
+Constant NO_SCORE;
+
+Release 3;
+
+
+! Colors
+Constant SMW_SCBACK SMW_CLR_BLACK;
+Constant SMW_SCTEXT SMW_CLR_WHITE;
+Constant SMW_SCEMPH SMW_CLR_YELLOW;
+Constant SMW_SCHEAD SMW_CLR_CYAN;
+Constant SMW_SCINPU SMW_CLR_GREEN;
+Constant SMW_SCPREF SMW_CLR_GREY;
+Constant SMW_SCNOTE SMW_CLR_CYAN;
+
+StatusLine time;
+
+Constant AMUSING_PROVIDED;
+[ amusing;
+    print (s_emph) "Visitantes^";
+    print (s_underline) "Generado por GLULXI6I18N@@64txtMap, v0.3/v0.46 20080803
+                         - Jueves, Nov., 26 de 2009: 12:13:18h^^"
+    ;
+    print "Este relato fue creado en un día para la RapidoComp3, celebrada en Noviembre de 2009.^^";
+    print "Las fechas estelares están tomadas del ~StarDate converter~, y se corresponden con los años
+           por los que pasa el relato.^";
+    print (s_bold) "^Nunca termina.^";
+    print (s_underline) "    Por Baltasar, el arquero.^^";
+];
+
+Include "Parser";
+Include "infglk";
+Include "smw";
+Include ">visitantes.bli";
+
+object date
+private
+    time -1,
+    EarthYear 1373 1553 2006,
+    StelarDate 949901 770901 317901,
+with
+    getTimeScene [;
+        return self.time;
+    ],
+    getEarthYear [;
+        return self.&EarthYear-->self.time;
+    ],
+    getStelarDate [;
+        return self.&StelarDate-->self.time;
+    ],
+    incrementTimeScene [;
+        ++self.time;
+        setTime( random( 1439 ), random( 59 ) );
+    ],
+    print [;
+        print (s_emph) "Fecha estelar: ", "-", self.getStelarDate(),
+              (s_underline) " (contrarreferencia: fecha terráquea c. ", self.getEarthYear(), " d.c.)^"
+        ;
+    ],
+has ;
+
+Object LibraryMessages
+with
+    before [;
+        Miscellany:
+            if ( lm_n == 4 ) {
+                print "¿Es el fin?";
+                rtrue;
+            }
+    ]
+;
+
+Include "VerbLib";
+Include "SpanishG";
+Include "character";
+
+object Limbo "Limbo";
+
+class Room
+with
+    in_to [;
+        player.think( "Pero... ¡Si ya estoy dentro!" );
+        rtrue;
+    ],
+    cant_go [;
+        player.think( "Es una lástima, pero no tengo una brújula a mano." );
+        rtrue;
+    ],
+
+has light;
+
+
+
+class Thing;
+
+class SceneryThing
+class Thing
+has scenery;
+
+[ waitKey;
+    wait( "...^" );
+];
+
+[ novelar txt;
+    print (string) txt, "^";
+    waitKey();
+];
+
+[ intro;
+    viewImageCenter( ngc1512 );
+
+    date.print();
+    print "El camarote del comandante disfruta de algunos privilegios, como por ejemplo, un gran ventanal estelar. ";
+    print "El Universo se extiende, inabarcable, en todas direcciones. Infinito espacio, infinito tiempo...";
+    print "^^";
+
+    player.think( "Ha pasado mucho tiempo... demasiado, desde que la ALK-C34 comenzó la búsqueda." );
+    waitKey();
+    player.think( "Casi demasiado para contarlo. Da miedo. Pero la misión es importante. El futuro de nuestra raza, de nuestra galaxia, depende de ello." );
+    waitKey();
+    player.think( "Tantos planetas, tantas razas... pero ninguno maduro, ninguno preparado para lo que se nos viene encima." );
+
+    waitKey();
+];
+
+[ initialise;
+    ! Prepare
+    lookmode = 2;                                   ! always redescribe
+    changePlayer( pjUngarr );
+    pjUngarr.prepareAllCharacters();
+    location = SALA_DE_REUNIONES;
+    date.incrementTimeScene();
+
+    ! Graphics
+    initializeSMW( 300 );
+
+	print "(Aquellos que juegan por primera vez deben introducir 'AYUDA'
+                en el prompt: '>'. Pulsa una tecla cuando veas: '...')^^";
+	waitKey();
+    intro();
+];
+
+! ================= Rooms ===============
+
+Room SALA_DE_REUNIONES "Sala de reuniones"
+with
+    name 'paredes' 'pared',
+    description [;
+        viewImageCenter( nave );
+        print "^Un gran tapete antigravitatorio sirve de soporte para las deliberaciones que tienen lugar en esta parte de la nave. El zumbido de los motores antigravedad, apenas audible a través de las paredes metálicas, se expande agradablemente por la habitación. Dos lugares ligeramente elevados, reservados para el comandante y el primer oficial, destacan en uno de los extremos del óvalo que forma el tapete. El resto de lugares se encuentra en su mayoría vacío, tan solo uno lo ocupa el oficial de operaciones especiales.^";
+        rtrue;
+    ],
+    out_to [;
+        player.think( "En este momento, es preciso atender al informe de Ngarr." );
+        rtrue;
+    ],
+;
+
+Room CAMAROTE_DE_COMANDANCIA "Camarote de comandancia"
+with
+    name 'paredes' 'pared',
+    description [;
+        viewImageCenter( tierra );
+        print "^El gran ventanal, que antes apuntaba hacia casa, el hogar, ahora
+                tiene enfocado el planeta Tierra. Al otro lado del ventanal, se
+                encuentra la puerta, y en el lateral, la consola de mando.^";
+        rtrue;
+    ],
+    out_to [;
+        player.think( "No. Debo tomar una decisión." );
+        rtrue;
+    ],
+;
+
+! ================= Personajes ===============
+
+Character pnjLAGGAN "Laggan" SALA_DE_REUNIONES
+with
+    short_name "Laggan",
+    name 'laggan' 'primer' 'oficial',
+    description "El primer oficial es el tipo de Alkrano que vuelve a ser muy popular entre los puestos militares de hoy en día. Si bien su historial resulta impecable, tiene una cierta tendencia beligerante. Esto se pone de manifiesto cuando la nave se encuentra bajo su mando, tiempo durante el cual los escudos siempre están activos, aún a pesar del elevado consumo de energía que ello supone... y del hecho de que hace más de 100 sarksecs que los Alkranos viven en armonía en la galaxia Alkrana (mejor dicho Galera, ahora que todos los planetas de la gran galaxia viven en paz).",
+    conversation [;
+        switch ( self.status ) {
+            0:
+                self.say( "Comandante, creo que deberíamos escuchar el informe del oficial Ngarr." );
+            1:
+        }
+
+        rtrue;
+    ],
+has  proper ;
+
+Character pnjNGARR "Ngarr" SALA_DE_REUNIONES
+with
+    short_name "Ngarr",
+    name 'NGARR' 'oficial' 'operaciones' 'especiales',
+    description "El oficial de operaciones especiales es un hábil maestro del disfraz, su cuerpo ha sido modificado genéticamente para mutar a voluntad en cuanto a su aspecto exterior. Aunque no todos los Alkranos estarían dispuestos a sufrir una modificación de tal calibre, oficiales de la abnegación y coraje de ngarr lo hacen voluntariamente.",
+    conversation [;
+        switch ( self.status ) {
+            0:  ! 1373, Andrónico y Juan se hinchan a leches
+                self.say( "Me he mezclado con los aborígenes, comandante, tal y como exigía la misión." );
+                player.think( "Ngarr nunca puede ocultar su satisfacción con sus habilidades." );
+                self.say( "Los humanos resultan ser descendentes de animales de tipo territorial.
+                          Creo que es eso lo que explica que dividan la tierra en trozos, reclamando
+                          su propiedad. De hecho, llaman a su planeta, simplemente, ~Tierra~.
+                          Más aún, los humanos se aglutinan en los llamados ~reinos~, y frecuentemente
+                          los reinos entran en guerra entre sí. Hay un jefe del reino, llamado ~rey~."
+                );
+                novelar( "El comandante interrumpió al oficial, con un movimiento
+                          amplio de uno de sus miembros."
+                );
+                player.say( "¿Eligen de entre ellos al más inteligente?" );
+                self.say( "Desconozco las normas exactas, pero me temo que no es así." );
+                novelar( "Los presentes se miraron significativamente,
+                          en silencio, los unos a los otros."
+                );
+                self.say( "A veces, un reino vence a otros
+                          varios, y a eso lo denominan ~imperio~."
+                );
+                self.say( "Comandante, en mi opinión, han seguido una evolución totalmente distinta a la
+                           nuestra. Son ejemplares físicamente fuertes,
+                           y se pelean entre ellos con armas primitivas,
+                           vanagloriándose de las muertes hechas; nosotros, en cambio, no entramos en
+                           guerras hasta desarrollar el arma espacial."
+                );
+                pnjLaggan.say( "Ngarr, limítese a informar de su misión, en aquellos campos
+                                donde destaca su experiencia y pericia."
+                );
+                self.say( "Sí, señor." );
+                self.say( "Los humanos son ciertamente primitivos. He asistido, en el llamado
+                           ~Imperio Bizantino~, a una lucha entre el rey y su hijo. Creo que
+                           el hijo deseaba ser rey, como su padre."
+                );
+                novelar( "El espía consultó sus notas en su pad personal." );
+                self.say( "Juan ~V~, y Andrónico ~I~,~V~, padre e hijo, respectivamente." );
+                novelar( "Ngarr hace una pausa, como avergonzado." );
+                pnjLaggan.say( "¿~I~, ~V~?, ¡es realmente extraño!" );
+                self.say( "Me temo que el rey ha hecho cegar a su hijo, por liderar
+                          la rebelión. ¡Su propio hijo!");
+                novelar( "Un repentino y abrupto silencio permitió que las palabras del oficial calaran
+                          con todo su peso."
+                );
+                pnjLaggan.say( "Son claramente inmaduros, señor. Si entráramos en un
+                                contacto pacífico con ellos, nos aplastarían."
+                );
+                pnjLaggan.say( "En caso de contactar, deberemos tomar precauciones." );
+                player.say( "No, no. Es demasiado pronto para... contactar ahora.
+                            En cualquier caso... Ngarr, habladnos de sus recursos.
+                            ¿Merecería la pena intervenir?"
+                );
+                novelar( "Al espía se le iluminarion los ojos." );
+
+                self.say( "Nadan en la abundancia, comandante. Los recursos de energía
+                           caen sin más del cielo la mayor parte de las veces. Las extensiones
+                           practicables son..." );
+                player.say( "Lo sabemos, lo sabemos. Hemos escaneado la superficie en cuanto
+                             llegamos."
+                );
+                novelar( "El primer oficial intervino de pronto, visiblemente excitado." );
+                pnjLaggan.say( "Comandante, podríamos..." );
+                player.say( "Seguiremos buscando. Sólo emplearemos la violencia en último lugar.
+                            El planeta no está maduro, eso es un hecho, pero el ciclo de vida de estos
+                            especímenes es muy corto. Buscaremos en otros lugares, y si no encontramos
+                            nada, volveremos y evalúaremos de nuevo la situación."
+                );
+
+                preparaTransicion( self.getStatus() );
+                self.status++;
+            1:  ! 1553: Juana Grey y las guerras religiosas
+                self.say( "Señor, estoy dispuesto a informar de mi segunda
+                            misión en la Tierra, si da su permiso."
+                );
+                player.say( "Adelante." );
+                novelar( "Ngarr consultó sus notas, y procedió a apagar y ocultar
+                          su pad electrónico."
+                );
+                self.say( "Me temo que el planeta sigue sumido en sus luchas internas,
+                           como la primera vez. He asistido, en un reino llamado
+                           ~Inglaterra~, al nombramiento de la reina llamada
+                           Jane Grey..."
+                );
+                pnjLaggan.say( "¿Cuál es el motivo de que un especimen tenga dos nombres?" );
+                self.say( "Creo que está relacionado con el hecho de poder rastrear
+                           su origen (~la cuna~, como ellos la llaman).
+                           Por lo visto, tiene mucha importancia
+                           provenir de una núcleo familiar..."
+                );
+                novelar( "El comandante pidió un alto. Eran demasiados datos, de golpe." );
+                player.say( "¿El jefe del reino no era el Rey?" );
+                self.say( "Y así sigue siendo comandante, sólo que cuando el especimen
+                           elegido es de sexo femenino, lo denominan ~reina~."
+                );
+                player.say( "¿Sexo? ¿Femenino?" );
+                novelar( "Ngarr se incomodó visiblemente." );
+                self.say( "Es complejo, mi comandante. Especímenes de sexos distintos
+                           se... aparean, intercambiando fluidos, para reproducirse,
+                           creando nuevos especímenes."
+                );
+                player.say( "¡Por Alkran que tal cosa es asquerosa!" );
+                novelar( "El primer oficial tapó su cara con sus propios miembros." );
+                pnjLaggan.say( "No quiero ni pensar en ello." );
+                self.say( "Para ellos, sin embargo, casi todos los momentos de sus
+                           vidas parecen centrarse en ese rito copulatorio, o temas
+                           directa o indirectamente relacionados. Eso
+                           cuando no se preocupan de seguir vivos, claro. Esa necesidad
+                           se acucia dependiendo de la cuna del aborigen, de sus recursos."
+                );
+                pnjLaggan.say( "¡Ciertamente primitivo! Pero, si uno de ellos tiene dificultades,
+                             ¿no le ayudan los otros especímenes?"
+                );
+                novelar( "Ngarr hizo una pausa, deseando cambiar de tema cuanto antes." );
+                self.say( "Por otra parte, he descubierto fuertes indicios de inteligencia." );
+                self.say( "Los nativos se preocupan fuertemente por sus creencias,
+                           al margen del rito copulatorio."
+                );
+                player.say( "¡Fantástico!¿Cuáles son esas preocupaciones?" );
+                self.say( "Tiene que ver con algo llamado Deidad. Es similar a lo
+                           que nosotros denominamos ~I~. Como nosotros, se
+                           preguntan fuertemente por el sentido de su lugar en
+                           la existencia."
+                );
+                novelar( "El comandante movió sus miembros vigorosamente." );
+                player.say( "Si eso es cierto, quizás ahora sea el momento de contactar con ellos." );
+                novelar( "El espía desvió su mirada, sacó su pad de nuevo, y simuló
+                          manipularlo."
+                );
+                self.say( "Me temo, comandante, que no han llegado a un acuerdo
+                           sobre la identidad o naturaleza de la deidad, y de hecho,
+                           cuando sus creencias se ven amenazadas se vuelven violentos,
+                           beligerantes hasta el extremo de... matar. Esta reina
+                           tiene unas creencias, pero la mayoría del reino tiene
+                           otras, y el resultado, aunque no lo puedo adivinar, bien
+                           podría terminar en una guerra."
+                );
+                self.say( "Es una tendencia que ya existía antes, pero ahora las
+                          diferencias entre distintas creencias es muy marcada."
+                );
+                novelar( "Un silencio sepulcral cayó pesadamente sobre ellos, y
+                          su presión pareció llenar toda la sala hasta querer hacerla
+                          reventar."
+                );
+                pnjLaggan.say( "Señor..." );
+                player.say( "No es el momento. Todavía no." );
+                player.say( "Todavía quedan por explorar la gran mayoría de planetas del cuadrante X11, y..." );
+                pnjLaggan.say( "¡Señor! ¡Los recursos!..." );
+                player.say( "Seguirán ahí cuando volvamos. La decisión está tomada,
+                             y la celebración de esta reunión de informe de inteligencia
+                             ha terminado."
+                );
+                novelar( "El comandante lanzó una mirada significativa al primer
+                          oficial, y el Alkrano abandonó la sala, visiblemente
+                          alterado."
+                );
+                novelar( "Repentinamente, se sintió muy cansado, como si el gran peso
+                          de la responsabilidad se hubiera multiplicado."
+                );
+                player.think( "Y en realidad, así es." );
+
+                preparaTransicion( self.getStatus() );
+                self.status++;
+            2: ! 2006: Desastre de la mina de Cochos
+                self.say( "Preparado para informar, comandante, si da su permiso." );
+                player.say( "Adelante." );
+                self.say( "Ha transcurrido un tiempo significativo, para la medida
+                           del tiempo de la Tierra."
+                );
+                self.say( "Al menos, la evolución ha sido exponencial, en cuanto
+                           a avances científicos y tecnológicos."
+                );
+                novelar( "El comandante se impacientaba, deseando oir lo que
+                          parecía sería el veredicto para la salvación de su raza,
+                          y la vuelta a casa."
+                );
+                player.say( "¿Podemos entonces contactar con ellos?" );
+                self.say( "Diría que sí, comandante, aprecio una importante
+                           evolución en parte de los especímenes que parece
+                           querer llevar a la raza humana a unos objetivos más
+                           altos."
+                );
+                pnjLaggan.say( "Aprecia, parece querer... es demasiado vago,
+                               oficial. Denos hechos, acontecimientos."
+                );
+                novelar( "El espía consultó de nuevo su pad." );
+                self.say( "Bueno, comandante, han descubierto nuestra galaxia,
+                           la llaman..."
+                );
+                novelar( "Ngarr desvió la mirada sólo un momento." );
+                self.say( "NGC1512" );
+                novelar( "El primer oficial y el comandante se miraron
+                          sorprendidos."
+                );
+                player.say( "¿Cuál es el significado de esa... palabra?" );
+                self.say( "Ninguno, señor. Se trata de una referencia." );
+                novelar( "Ambos oficiales dejaron de contener la respiración, aliviados." );
+                player.say( "Comprendo. Prosiga." );
+                self.say( "Oh, y la música, ¡es fascinante!... me he permitido
+                           el lujo de traer conmigo una reproducción de la
+                           Sonata en mi mayor K.380, que..."
+                );
+                pnjLaggan.say( "¿Es esa música un medio de comunicación?" );
+                self.say( "No, la crean por placer, para escuchar en momentos
+                           de ocio."
+                );
+                pnjLaggan.say( "Pero... ¿tiene alguna utilidad?" );
+                self.say( "Bueno, no en sí misma, pero..." );
+                novelar( "El primer oficial hizo un gesto amplio y rápido con
+                          uno de sus miembros, impacientándose."
+                );
+                pnjLaggan.say( "Haga el favor de centrarse en hechos significativos." );
+                self.say( "Han desarrollado las matemáticas, estudian su propia
+                            historia... afirman no querer cometer los mismos
+                            errores del pasado."
+                );
+                player.say( "Parece que promete..." );
+                pnjLaggan.say( "Ngarr, su informe se me antoja totalmente vago y parcial.
+                                ¿Está ocultando algo?"
+                );
+                novelar( "El oficial de operaciones especiales se sintió muy
+                          incómodo. Se dirigió directamente al primer oficial."
+                );
+                self.say( "Bueno señor, hace tan solo noventa y dos de sus años se produjo
+                          la llamada I Guerra mundial."
+                );
+                player.say( "¿Mundial? ¿Qué significa eso? ¿Todos contra todos?" );
+                self.say( "Me temo que sí señor. No conozco exactamente el tema
+                           en disputa, pero no debió quedar totalmente claro,
+                           pues repitieron más o menos la misma guerra treinta
+                           de sus años más tarde."
+                );
+                player.say( "¡La repitieron! ¿Qué quiere decir con eso?" );
+                self.say( "Se organizaron para otra contienda similar y la llamaron II
+                           Guerra Mundial."
+                );
+                novelar( "El primer oficial dio un respingo." );
+                player.say( "¡Es de locos, de locos!" );
+                player.say( "Está bien. ¿Cuál es el evento más popular en este
+                             momento. ¿De qué hablan entre ellos?"
+                );
+                novelar( "El espía hizo como que consultaba su pad, aunque sabía
+                          perfectamente lo que tenía que contestar."
+                );
+                self.say( "Bueno, varios especímenes se han visto atrapados en
+                          una mina, intentando obtener recursos minerales
+                          directamente excavando su tierra." );
+                pnjLaggan.say( "¿Una mina?" );
+                self.say( "Un gran agujero en el suelo, muy profundo, del que
+                           se extraen minerales."
+                );
+                pnjLaggan.say( "¿Para qué se interesan en los recursos minerales,
+                                dada la cantidad de otros recursos
+                                que tienen disponibles?"
+                );
+                self.say( "Señor, de hecho, le dan mucha importancia, basan lo que
+                           ellos llaman economía en un mineral llamado ~oro~, y
+                           también en otros minerales raros como el carbono,
+                           que por un proceso de presión durante un largo
+                           periodo de tiempo, se transforma en una especie
+                           de prisma cristalino..." );
+                player.say( "Bueno, de acuerdo, ¿qué pasó con esos especímenes?" );
+                novelar( "El oficial interpelado sacudió sus miembros espasmódicamente." );
+                self.say( "Lo llaman el desastre minero de Pasta de Cochos." );
+                novelar( "El espía dirigió una mirada a sus oficiales superiores,
+                          que se encontró con total incomprensión."
+                );
+                self.say( "Resumiendo, se sospecha que dejaron morir a varios
+                           especímenes para conseguir mejores beneficios
+                           económicos."
+                );
+                pnjLaggan.say( "¡Pero bueno! ¿Y qué pasa si no dispones de esos
+                                ~beneficios económicos?"
+                );
+                self.say( "Los especímenes que no los tienen se mueren, señor,
+                           pues no pueden conseguir alimentos."
+                );
+                novelar( "El capitán hizo un gesto brusco con uno de sus miembros,
+                        un gesto rotundo que no dejaba lugar a dudas."
+                );
+                player.say( "He oído suficiente. Está bien. Retírese, oficial." );
+                novelar( "El espía abandonó la sala, mientras el capitán se preparaba
+                          para irse."
+                );
+                pnjLaggan.say( "Señor, yo..." );
+                player.say( "Tomaré una decisión y se la haré saber, oficial." );
+                novelar( "El comandante remarcó la última palabra con especial énfasis,
+                          de manera que no quedara lugar a dudas, y abandonó
+                          la sala."
+                );
+                preparaTransicion( self.getStatus() );
+        }
+
+        rtrue;
+    ],
+has  proper ;
+
+Character pjUNGARR "Ungarr" SALA_DE_REUNIONES
+with
+    short_name "Ungarr",
+    name 'ungarr' 'comandante',
+    description "Eres el comandante Ungarr, del navío de combate estelar ALK-C34 en misión en el cuadrante SS-345 (contrarreferencia: sistema solar, planeta ~Tierra~, habitado por los autodenominados ~humanos~ )",
+    conversation [;
+        self.think( "No parece muy inteligente hablar conmigo mismo.Y si alguien me viera, me relevarían del mando." );
+        rtrue;
+    ],
+    headerForThinking [;
+        self.printHeader();
+        print " pensó: ";
+        print "~";
+    ],
+has  proper ;
+
+
+! ================= Things ===============
+
+SceneryThing objLUGARES "lugares" SALA_DE_REUNIONES
+with
+    name 'LUGARES',
+    description "Son prominencias antigravitatorias, una simple manera de conservar las tradiciones del mando en un navío de guerra."
+has  pluralname ;
+
+SceneryThing objTAPETE "tapete" SALA_DE_REUNIONES
+with
+    name 'TAPETE',
+    description "El típico tapete antigravitatorio, mucho más cómodo que andar arrastrándose por el suelo, dónde va a parar."
+has   ;
+
+SceneryThing objCONSOLA "consola de mando" CAMAROTE_DE_COMANDANCIA
+with
+    name 'consola' 'mando',
+    description [;
+        print "Es una consola de órdenes vocales.
+               Hay varias opciones en la pantalla holográfica,
+               pero las más relevantes para esta situación son:^"
+        ;
+        print (s_fixed) "1. Rumbo^2. Ataque^3. Autodestrucción^";
+        rtrue;
+    ],
+    printHeader [;
+        print (s_bold) "Consola: ";
+        rtrue;
+    ],
+    comunicacion [ txt;
+        novelar(
+            "El comunicador se activó en la consola; se trataba del primer oficial."
+        );
+        pnjLaggan.say( txt );
+        novelar( "El comandante apagó la consola: no tenía ganas de escuchar
+                  a nadie, y mucho menos a Laggan."
+        );
+    ],
+    orders [ word;
+        NotUnderstood:
+            if ( consult_words > 1 ) {
+                player.think( "Mmm... demasiadas palabras." );
+                rtrue;
+            }
+            else
+            if ( consult_words < 1 ) {
+                player.think( "Mmm... demasiado parco en palabras." );
+                rtrue;
+            }
+
+            wn = consult_from;
+            word = NextWord();
+
+            if ( word == '1//' or 'rumbo' ) {
+                player.think( "La nave ya apenas tiene energía para prolongar más
+                               la misión, es indiferente
+                               a dónde la lleve. Debo alejarla lo más posible de
+                               la Tierra, para preservarla."
+                );
+
+                self.printHeader();
+                print (s_fixed) "Procediendo a 03345-43738-2870923^";
+
+                novelar( "Aun a pesar de los potentes motores antigravitatorios, una
+                       leve sacudida se percibió al arrancar los propulsores
+                       hiperespeciales."
+                );
+
+                self.comunicacion( "¡Comandante!¡Aborte la orden!¡Aborte!" );
+
+                player.think( "Sólo espero que lleguemos lo suficiente lejos
+                               para que nunca la encuentren. Aunque claro, siempre
+                               podrán revisar los bancos de datos... esperemos
+                               que tengan otras prioridades que atender."
+                );
+                deadflag = 2;
+            }
+            else
+            if ( word == '2//' or 'ataque' ) {
+                player.think( "Los humanos no merecen la pena. No se merecen
+                               el planeta en el que les ha tocado vivir, un
+                               planeta lleno de posibilidades y recursos, que
+                               están transformando en un vertedero."
+                );
+
+                self.printHeader();
+                print (s_fixed) "Zafarrancho de combate.^";
+
+                self.comunicacion( "¡A sus órdenes, comandante!¡Iniciaremos el ataque al punto!" );
+
+                player.think( "Que I me perdone, sólo espero estar tomando la
+                               decisión correcta... que es preservar nuestra raza...
+                               a costa de la humana."
+                );
+                deadflag = 2;
+            }
+            else
+            if ( word == '3//' or 'autodestruccion' ) {
+                player.think( "La nave ya apenas tiene energía para prolongar más
+                               la misión, es indiferente
+                               a dónde la lleve. Debo alejarla lo más posible de
+                               la Tierra, para destruirla con seguridad."
+                );
+
+                player.think( "Los humanos no son tan distintos de nosotros,
+                               al fin y al cabo. De hecho, son exactamente iguales
+                               a nosotros cuando comenzamos las guerras planetarias.
+                               No tenemos derecho a hacernos con su planeta por la
+                               fuerza."
+                );
+
+                self.printHeader();
+                print (s_fixed) "Procediendo a 03345-43738-2870923^";
+
+                novelar( "Aún a pesar de los potentes motores antigravitatorios, una
+                       leve sacudida se percibió al arrancar los motores
+                       hiperespeciales."
+                );
+
+                self.comunicacion( "¡Comandante!¡Aborte la orden!¡Aborte!" );
+
+                player.think( "Sólo espero que lleguemos lo suficiente lejos
+                               como para que nunca relacionen el ~accidente~
+                               con la tierra y no haya
+                               investigaciones ulteriores."
+                );
+                player.think( "Que I me perdone por sacrificar la vida de mis
+                               tripulantes, y la mía propia."
+                );
+
+                deadflag = 2;
+            }
+            else
+            print "Opción inválida.^";
+
+            rtrue;
+    ],
+    before [;
+        Touch:
+            "No es necesario tocar la consola. Basta con ~consola, opcion~.";
+    ],
+has female talkable;
+
+SceneryThing objPuerta "puerta" CAMAROTE_DE_COMANDANCIA
+with
+    name 'puerta',
+    description [;
+        "Pues sí, es una forma de salir del camarote. La más civilizada y
+         segura, por descontado.";
+    ],
+    before [;
+        Open:
+            "No es necesario abrirla, con acercarse a ella se abre sola.";
+    ],
+has female;
+
+
+SceneryThing objVentanal "ventanal" CAMAROTE_DE_COMANDANCIA
+with
+    name 'ventana' 'ventanal' 'tierra' 'planeta',
+    description [;
+        player.think( "Una vista magnífica." );
+        rtrue;
+    ],
+has female;
+
+
+! ================ Transiciones =================
+
+[ preparaTransicion num;
+    switch( num ) {
+        0:
+            novelar( "^Los asistentes a aquella reunión dieron por finalizadas sus disertaciones." );
+            playerTo( CAMAROTE_DE_COMANDANCIA, 2 );
+            novelar( "^El comandante suspiró; Laggan tenía su parte de razón, pues
+                     habían encontrado por fin el planeta que, exactamente, estaban buscando,
+                     desde hacía mucho, mucho tiempo. Pero debía refrenar a Laggan y a su
+                     instinto belicoso. Las vidas de tantos humanos no podrían
+                     tomarse a la ligera."
+            );
+            player.think( "Pero cuánto, cuánto me gustaría darle la razón. No deja de ser,
+                           desde un punto de vista práctico, una cuestión de escrúpulos. ¿O no?"
+            );
+            novelar( "Ungarr permaneció silencioso, escrutando por el enorme ventanal
+                     aquel planeta maravilloso, capaz de resolver de un plumazo todas
+                     sus necesidades."
+            );
+            player.think( "Ninguna nave de guerra Alkrana ha entrado en combate desde la
+                           guerra interplanetaria, y no será bajo mi mando que vuelva a
+                           suceder, a no ser que existan causas de fuerza mayor."
+            );
+            novelar( "Suspiró y sacudió sus extremidades. Decidió ponerse a trabajar
+                     inmediatamente. Miríadas de planetas quedaban por explorar,
+                     sólo en aquel cuadrante de la galaxia, y este sólo era uno de ellos."
+            );
+            clearMainWindow();
+            viewImageCenter( ngc1512 );
+            date.incrementTimeScene();
+            date.print();
+            novelar( "El comandante dejó de observar aquella lejana galaxia, su galaxia,
+                      y enfocó de nuevo la tierra."
+            );
+            viewImageCenter( tierra );
+            player.think( "¿Habrán cambiado los humanos?¡Cuanto querría terminar esta misión!" );
+            novelar( "Ungarr suspiró. Laggan se había estado comportando desafiantemente,
+                      y el sabía perfectamente lo que quería. Hasta cierto punto, tenía razón.
+                      ~Sólo en caso de fuerza mayor, Laggan~, y había respondido ~¿Acaso no
+                      son las vidas de nuestros ciudadanos una causa mayor?~ Fue capaz de
+                      sobreponerse a aquel argumento para responder, afortunadamente,
+                      ~No a costa de millones de vidas de seres inteligentes~."
+            );
+            player.think( "Y allá vamos de nuevo. Ngarr habrá vuelto ya del reconocimiento." );
+            playerTo( SALA_DE_REUNIONES, 2 );
+        1:
+            playerTo( CAMAROTE_DE_COMANDANCIA, 2 );
+            novelar( "^El comandante suspiró, admirando la vista de aquel planeta,
+                       aquel precioso planeta, en más de un sentido."
+            );
+            player.think( "La búsqueda se está tornando frustrante, y aunque
+                        pueda desviar, esta vez, la atención de Laggan y del resto de la
+                        tripulación sobre la Tierra, no podría volver a hacerlo
+                        en el futuro."
+            );
+            novelar( "Ungarr entornó la vista para descansar, sólo tras
+                      ordenar, por medio de la consola, un nuevo rumbo,
+                      para continuar la misión."
+            );
+            clearMainWindow();
+            viewImageCenter( ngc1512 );
+            date.incrementTimeScene();
+            date.print();
+            novelar( "El comandante echaba de menos su hogar. Enfocó el visor para que el
+                      ventanal le mostrara, de nuevo, aquel planeta que era, aparentemente,
+                      su última posibilidad."
+            );
+            viewImageCenter( tierra );
+            player.think( "¿Cómo es posible que de entre todas las naves enviadas,
+                           ninguna haya encontrado un planeta adecuado, un planeta...
+                           cómo este."
+            );
+            player.think( "Ngarr ya ha vuelto para informar.
+                           Deben estar esperándome en la sala de reuniones."
+            );
+            waitKey();
+            playerTo( SALA_DE_REUNIONES, 2 );
+        2:
+            player.think( "Ya apenas queda energía para volver a alguno
+                           de los planetas visitados, o a... casa"
+            );
+            novelar( "El comandante sentía el peso de la decisión sobre todo su ser."
+            );
+            player.think( "¿Debo preservar la raza humana, o arrebatarles su planeta?" );
+            waitKey();
+            player.think( "¿Perder la nave y sus tripulantes, o salvarla, y con ella a los de mi raza?" );
+            waitKey();
+            playerTo( CAMAROTE_DE_COMANDANCIA, 2 );
+    }
+];
+
+[ayudaSub;
+    print "^Las órdenes siguientes son básicas y pueden encontrarse
+      en casi cualquier aventura conversacional. El jugador
+      puede tratar siempre de hacer otras acciones.^^"
+    ;
+    s_fixed();
+    print "^
+     ayuda                 -   Esta ayuda.^
+     ex, examinar x        -   Da una descripción de x.^
+     examinarme, xme       -   Información sobre ti y sobre tu misión.^
+     hablar con y          -   Permite comunicarse con y, si está presente.^
+     x, y                  -   Dar a x la orden y.^
+     ^^"
+    ;
+    s_normal();
+    print (s_underline) "Por Baltasar, el Arquero.", (s_normal)
+    "^^
+      Mándame tus comentarios a: baltasarq@@64yahoo.es
+      ^^
+      Tú eres ", (s_underline) player.short_name,
+      ", Comandante de la Flota Espacial de Alkran...
+     ^";
+    <<Examine player>>;
+];
+
+Verb meta 'ayuda' 'pistas'
+    * -> ayuda
+;

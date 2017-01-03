@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ifindex version="1.0" xmlns="http://babel.ifarchive.org/protocol/iFiction/">
+    <story>
+        <identification>
+            <ifid>glulx-3-091203-c4c63c74</ifid>
+            <format>glulx</format>
+        </identification>
+        <bibliographic>
+            <title>Visitantes</title>
+            <author>Baltasar</author>
+            <language>ES</language>
+            <headline>Los alkranos buscan un planeta... como la tierra</headline>
+            <genre>Fiction</genre>
+            <description>Los alkranos necesitan desesperadamente un planeta, un planeta poblado con una raza madura, con la que poder contactar y negociar la adquisición de recursos que precisan.</description>
+        </bibliographic>
+        <contacts>
+            <authoremail>baltasarq@yahoo.es</authoremail>
+            <url>http://caad.es/baltasarq/</url>
+        </contacts>
+        <release>
+            <version>1</version>
+            <releasedate>2009/11/27</releasedate>
+        </release>
+        <colophon>
+            <generator>Babble</generator>
+            <originated>2009/11/27</originated>
+        </colophon>
+    </story>
+</ifindex>
