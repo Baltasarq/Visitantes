@@ -259,7 +259,7 @@ destructEnding.preExamine = function() {
         ctrl.print( "Procediendo a NGC1512." );
         objConsole.communication( "¡Comandante!¡Aborte la orden!¡Aborte!" );
         pnjUngarr.say( "Sólo espero que lleguemos lo suficientemente lejos \
-                        como para que nunca relacionen el ~accidente~ \
+                        como para que nunca relacionen el 'accidente' \
                         con la tierra y no haya \
                         investigaciones ulteriores." );
         ctrl.print( "Aún a pesar de los potentes motores antigravitatorios, una \
