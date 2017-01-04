@@ -2,6 +2,7 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
+        <!-- uuid:C76F8003-BB1B-4F43-B8A8-53B1F2C8BF51 -->
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
         <script type="text/javascript" src="http://baltasarq.github.io/fi-js/lib/fi.js"></script>
         <script type="text/javascript" src="http://baltasarq.github.io/fi-js/lib/verbs.js"></script>
@@ -16,7 +17,7 @@
                         <td align="right"><div id="dvId"></div></td>
                 </tr></table>
         </div>
-        <div id="dvIntro" style="display:block">
+        <div id="dvIntro">
                 <form id="frmIntro" action="submit">
                         <input type="image" id="btBoot" class="btn"
                                alt="enter" width="32" height="32"
@@ -24,9 +25,9 @@
                                onClick="return ctrl.boot();">
                 </form>
         </div>
-        <div id="dvFi" style="display:none">
+        <div id="dvFi">
                 <div id="dvPic"></div>
-                <div id="dvDesc" style="color:green">
+                <div id="dvDesc">
                 </div>
                 <p>
                 <div id="dvAnswer">
@@ -41,8 +42,8 @@
                         </td>
                         <td>
                             <input  id="btSend" type="button"
-                                    onClick="return parser.doParse();" style="display:none"/>
-                            <input id="btReset" type="button" style="display:none"/>
+                                    onClick="return parser.doParse();"/>
+                            <input id="btReset" type="button"/>
                         </td>
                     </form>
                     </tr></table>
