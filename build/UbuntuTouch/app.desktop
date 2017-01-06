@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Visitantes
-Comment=Aventura conversacional de ciencia ficción
+Comment=Ficción interactiva SciFi
 Exec=webapp-container --app-is="visitantes.baltasarq" $@ www/index.html
 Terminal=false
 Type=Application
