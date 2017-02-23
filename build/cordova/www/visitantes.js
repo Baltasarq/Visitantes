@@ -1,10 +1,11 @@
 // visitantes.js
 /*
  *      Visitantes (v4)
- *          2009, 2010: Visitantes v1 a Visitantes v3: inform/glulx
- *      (c) 2017 baltasarq@gmail.com MIT License
- *
- *      Aventura de texto SciFi construida con fi.js.
+ *          2009, 2010: Visitantes v1 a Visitantes v3:  I6Sp/glulx
+ *          2017:       Visitantes v4:                  fi.js
+ * 
+ *      (c) 2009, 2010, 2017 baltasarq@gmail.com MIT License.
+ *      Ficc. Interactiva SciFi.
  *
  */
 
@@ -12,15 +13,15 @@ ctrl.ponTitulo( "Visitantes" );
 ctrl.ponIntro( "Los Alkranos necesitan un planeta... como la Tierra." );
 ctrl.ponImg( "res/ngc1512.jpg" );
 ctrl.ponAutor( "Baltasarq" );
-ctrl.ponVersion( "4 20170107" );
+ctrl.ponVersion( "4.1 20170223" );
 
 function amenities() {
-    return "<p>Este relato fue creado para una <i>RapidoComp</i> en 2009.<br> \
+    return "Este relato fue creado para una <i>RapidoComp</i> en 2009.<br/> \
             El soporte era Inform 6SP/Glulx, pero en realidad se trataba \
             más de un relato interactivo que de una verdadera aventura \
-            conversacional (objetos, puzzles, etc.)</p><p>Así que en 2016 \
+            conversacional (objetos, puzzles, etc.)<br/>Así que en 2016 \
             me lié la manta a la cabeza y la porté a mi propio sistema, \
-            <b>fi.js</b>. El resultado es así más versátil.</p>"
+            <b>fi.js</b>. El resultado es así más versátil."
 }
 
 var dates_presentation = {
@@ -56,10 +57,15 @@ var locCamaroteComandancia = ctrl.places.creaLoc(
      ${consola, ex consola} de mando se sitúa del lado opuesto." );
 locCamaroteComandancia.pic = "res/alk-c34.jpg";
 
+locCamaroteComandancia.preGo = function() {
+    ++pnjNgarr.status;
+    goAction.exe( parser.sentence );
+}
+
 locCamaroteComandancia.postExamine = function() {
     var player = ctrl.personas.getPlayer();
-    window.scrollTo( 0, 0 );
 
+    ctrl.clearAnswers();
     switch ( dates_presentation.time ) {
         case 0:
             ctrl.print( dates_presentation.getDatePresentation() );
@@ -164,8 +170,14 @@ objConsole.communication = function(txt) {
 
 var htmlRestartEnding = "<p align='right'>\
                          <a href='javascript: location.reload();'>\
-                         <i>Comenzar de nuevo</i></a>.\
-                         </p>";
+                         <i>Comenzar de nuevo</i></a>.<br/>\
+                         <i><a href='#' onClick=\"javascript: \
+                         document.getElementById('pAmenity').\
+                         style.display='block'; return false\">\
+                         Ver curiosidades</a>.</i></p>\
+                         <p id='pAmenity' align='right' style='display: none'>"
+                         + amenities()
+                         + "</p>";
 var returnEnding = ctrl.creaObj(
         "returnEnding",
         [],
@@ -323,6 +335,7 @@ var pnjLaggan = ctrl.personas.creaPersona( "Laggan",
 );
 
 pnjLaggan.preTalk = function() {
+    ctrl.clearAnswers();
     this.say( "Creo que deberíamos escuchar el informe del \
                oficial de operaciones especiales, comandante." );
 }
@@ -338,11 +351,14 @@ var pnjNgarr = ctrl.personas.creaPersona( "Ngarr",
                     locSalaReuniones
 );
 
+pnjNgarr.status = 0;
 pnjNgarr.preTalk = function() {
     var player = ctrl.personas.getPlayer();
 
-    switch ( dates_presentation.time ) {
-            case 0: // 1373, Andrónico y Juan se hinchan a leches
+    ctrl.clearAnswers();
+
+    switch ( this.status ) {
+            case 1: // 1373, Andrónico y Juan se hinchan a leches
                 this.say( "Me he mezclado con los aborígenes, comandante, \
                            tal y como exigía la misión." );
                 ctrl.print( "El comandante pensó en como Ngarr nunca \
@@ -416,8 +432,8 @@ pnjNgarr.preTalk = function() {
                             Sólo emplearemos la violencia en último lugar. \
                             El planeta no está maduro, eso es un hecho, pero \
                             el ciclo de vida de estos \
-                            especímenes es muy corto. ${Buscaremos en otros \
-                            lugares, norte}, y si no encontramos \
+                            especímenes es muy corto. Buscaremos en otros \
+                            lugares, y si no encontramos \
                             nada, volveremos y evalúaremos de nuevo la \
                             situación." );
                 ctrl.print( "Los asistentes a aquella reunión dieron por \
@@ -442,9 +458,10 @@ pnjNgarr.preTalk = function() {
                             desde la guerra interplanetaria, y no será bajo mi \
                             mando que vuelva a suceder, a no ser que existan \
                             causas de fuerza mayor." );
-                ctrl.print( "Suspiró y sacudió sus extremidades. \
-                            Volvió a su camarote. \
-                            Decidió ${ponerse a trabajar, norte} \
+                ctrl.print( "Suspiró y sacudió sus extremidades." );
+                ctrl.print( "Empezó a pensar \
+                            en volver a su camarote y \
+                            ${ponerse a trabajar, norte} \
                             inmediatamente. Miríadas de planetas \
                             quedaban por explorar, sólo en aquel cuadrante de \
                             la galaxia, y este sólo era uno de ellos."
@@ -452,7 +469,18 @@ pnjNgarr.preTalk = function() {
                 this.status++;
                 dates_presentation.next();
                 break;
-            case 1:  // 1553: Juana Grey y las guerras religiosas
+            case 2:
+                this.say( "No hay más que informar, comandante." );
+                player.say( "De acuerdo. Gracias por el informe." );
+                ctrl.print( "Empezó a pensar \
+                            en volver a su camarote y \
+                            ${ponerse a trabajar, norte} \
+                            inmediatamente. Miríadas de planetas \
+                            quedaban por explorar, sólo en aquel cuadrante de \
+                            la galaxia, y este sólo era uno de ellos."
+                );
+                break;
+            case 3:  // 1553: Juana Grey y las guerras religiosas
                 this.say( "Señor, estoy dispuesto a informar de mi segunda \
                            misión en la Tierra, si da su permiso." );
                 player.say( "Adelante." );
@@ -565,15 +593,27 @@ pnjNgarr.preTalk = function() {
                             pueda desviar, esta vez, la atención de Laggan \
                             y del resto de la tripulación sobre la Tierra, \
                             no podré volver a hacerlo en el futuro." );
-                ctrl.print( "Pesadamente, el comandante volvió a su camarote." );
-                ctrl.print( "Ungarr entornó la vista para descansar, \
-                             sólo tras ordenar, por medio de la consola, \
-                             un nuevo rumbo, \
-                             ${para continuar la misión, norte}." );
+                ctrl.print( "Con pesar, el comandante pensó en volver a su \
+                             camarote. Era el momento de \
+                             ${continuar la misión, norte}." );
                 this.status++;
                 dates_presentation.next();
                 break;
-            case 2: // 2006: Desastre de la mina de Cochos
+            case 4:
+                this.say( "No hay más que informar, comandante." );
+                player.say( "De acuerdo. Gracias por el informe." );
+                ctrl.print( "El comandante suspiró, admirando la vista \
+                              de aquel planeta, \
+                              aquel precioso planeta, en más de un sentido." );
+                player.say( "La búsqueda se está tornando frustrante, y aunque \
+                            pueda desviar la atención de \
+                            la tripulación sobre la Tierra, probablemente \
+                            no podré seguir haciéndolo en el futuro." );
+                ctrl.print( "Con pesar, el comandante pensó en volver a su \
+                             camarote. Era el momento de \
+                             ${continuar la misión, norte}." );
+                break;
+            case 5: // 2006: Desastre de la mina de Cochos
                 this.say( "Preparado para informar, comandante, \
                            si da su permiso." );
                 player.say( "Adelante." );
@@ -688,15 +728,31 @@ pnjNgarr.preTalk = function() {
                 );
                 player.say( "He oído suficiente. \
                              Está bien. Retírese, oficial." );
-                ctrl.print( "El espía abandonó la sala, mientras el capitán se \
-                          preparaba para irse." );
+                ctrl.print( "El espía se dispuso a abandonar la sala, \
+                             mientras el capitán se \
+                             preparaba a su vez para irse." );
                 pnjLaggan.say( "Señor, yo..." );
                 player.say( "Tomaré una decisión y se la haré saber, oficial." );
                 ctrl.print( "El comandante remarcó la última palabra con \
                           especial énfasis, \
                           de manera que no quedara lugar a dudas, y \
-                          ${abandonó la sala, norte}." );
+                          ${se decidió a abandonar la sala, norte}." );
                 dates_presentation.next();
+                ++this.status;
+                break;
+            case 6:
+                this.say( "No hay más que informar, comandante." );
+                player.say( "Y he oído suficiente. \
+                             Está bien. Puede retirarse, oficial." );
+                ctrl.print( "El espía se dispuso a abandonar la sala, \
+                             mientras el capitán se \
+                             preparaba a su vez para irse." );
+                pnjLaggan.say( "Señor, yo..." );
+                player.say( "Tomaré una decisión y se la haré saber, oficial." );
+                ctrl.print( "El comandante remarcó la última palabra con \
+                          especial énfasis, \
+                          de manera que no quedara lugar a dudas, y \
+                          ${se decidió a abandonar la sala, norte}." );
                 break;
     }
 }
