@@ -1,4 +1,3 @@
-build.sh
 *.bak
 *~
 *.log
@@ -6,4 +5,3 @@ build.sh
 *.z8
 *.ulx
 *.gblorb
-build/cordova/platforms
